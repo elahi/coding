@@ -79,17 +79,22 @@ b <- brick(r1, r2, r3)
 b2 <- brick(s)
 
 ##### Load adriatic depth layer #####
+
+# This will only import one layer (the 1st)
 adr <- raster("../evp_vms/ignoreFolder/adria_depth/C3_rgb.tif")
+adr
+plot(adr)
+
 adr2 <- raster("../evp_vms/ignoreFolder/adria_depth/C3_rgb_crop.tif")
 adr; adr2 # note that the cropped map has lost a bunch of important info (e.g., lat longs, coordinate reference system)
 
-# create brick from file
+# create raster brick from file
 adr <- raster::brick("../evp_vms/ignoreFolder/adria_depth/C3_rgb.tif")
 adr
 
 # extract a single layer
-adr1 <- raster(adr, layer = 2)
-adr1
+adr1 <- raster(adr, layer = 1)
+adr1; plot(adr1)
 
 ##### Raster algebra #####
 r <- raster(ncol = 10, nrow = 10)
@@ -141,18 +146,44 @@ adr
 plot(adr) 
 
 plotRGB(adr, r = 1, g = 2, b = 3)
-crop_adria <- drawExtent()
-crop_adria
 
-adrCrop <- crop(adr, crop_adria)
+# Manually set crop extent
+# crop_adria <- drawExtent()
+
+# Set crop extent with coordinates
+cropExtent <- c(12.0, 19.9, 40.0, 46.0)
+
+adrCrop <- crop(adr, cropExtent)
 adrCrop
-plotRGB(adrCrop, r = 1, g = 2, b = 3)
+plotRGB(adrCrop, r = 1, g = 2, b = 3, axes = TRUE)
+
+adrCrop@extent
+adrCrop@crs
+
+
+# Plot using ggplot2
+
+library(ggplot2)
+library(rgeos)
+adrF <- fortify(adrCrop)
+head(lnd_f)
+
+
+xmin = round(min(punti2$lon,na.rm=T),2)-0.01
+xmax = round(max(punti2$lon,na.rm=T),2)+0.01
+ymin = round(min(punti2$lat,na.rm=T),2)-0.01
+ymax = round(max(punti2$lat,na.rm=T),2)+0.01
+
+xt = cut(punti2$lon,seq(xmin,xmax,0.02))
+yt = cut(punti2$lat,seq(ymin,ymax,0.02))
+
+
 
 # Save in 'native' raster format (.grd) - also results in .gri file (350mb!)
 # writeRaster(adrCrop, "../evp_vms/ignoreFolder/adria_depth/adriaCrop_rgb.grd", overwrite = TRUE)
 
 # To save as geotif, need rgdal (dosn't work, not sure why)
-# writeRaster(adrCrop, "../evp_vms/ignoreFolder/adria_depth/adriaCrop_rgb.tif", 
-#             format = "GTiff", overwrite = TRUE)
+writeRaster(adrCrop, "../evp_vms/ignoreFolder/adria_depth/adriaCrop_rgb.tif",
+            format = "GTiff", overwrite = TRUE)
 
 ##' STOPPED LESSON AT 5.1 
