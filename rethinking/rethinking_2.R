@@ -215,4 +215,7 @@ p_land = p_land_E * p_E + p_land_M * p_M
 ## Solve
 p_land_E * p_E / p_land
 
+##### PRACTICE - 2M4 ######
 
+##' Deck with three cards, each has 2 sides, and each side is either black or white
+##' 
