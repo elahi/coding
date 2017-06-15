@@ -4,6 +4,9 @@
 ##' Chapter 3
 
 library(rethinking)
+# library(dplyr)
+# library(tibble)
+# library(ggplot2)
 
 ##### R CODE SNIPPETS ######
 
@@ -206,3 +209,76 @@ mean(w == 8)
 w <- rbinom(1e4, size = 9, prob = samples)
 simplehist(w)
 mean(w == 6)
+
+# 3H1
+data(homeworkch3)
+## birth 1 - vector of first children for 100 parents
+## birth 2 - vector of second children for the same 100 parents
+## 1 = boy; 0 = girl
+
+## total boys
+total_boys <- sum(birth1) + sum(birth2)
+
+## first-born boys
+first_born_boys <- sum(birth1)
+
+## n_births
+n_births = 200
+
+## Compute the posterior distribution for a boy, assume a uniform prior. 
+## Which parameter value maximizes the posterior probability?
+p_grid <- seq(from = 0, to = 1, length.out = 1000)
+prior <- rep(1, 1000)
+likelihood <- dbinom(total_boys, size = n_births, prob = p_grid)
+posterior <- likelihood * prior
+posterior <- posterior/sum(posterior)
+plot(p_grid, posterior)
+p_grid[which.max(posterior)]
+
+# 3H2
+set.seed(100) 
+samples <- sample(p_grid, prob = posterior, size = 1e4, replace = TRUE)
+plot(samples)
+dens(samples)
+HPDI(samples, prob = c(.5, .89, .97))
+
+# 3H3
+simdat <- rbinom(1e4, size = n_births, prob = samples)
+plot(simdat)
+simplehist(simdat)
+dens(simdat)
+abline(v = total_boys, col = "red")
+
+# 3H4
+simdat <- rbinom(1e4, size = 100, prob = samples)
+plot(simdat)
+simplehist(simdat)
+dens(simdat)
+abline(v = first_born_boys, col = "red")
+
+# 3H5
+## Model assumes that first and second births are independent
+birth1
+birth2
+birth_df <- data_frame(birth1, birth2)
+
+## Focus now on 2nd births that followed female first borns
+birth_df_g1 <- birth_df %>% filter(birth1 == 0)
+first_born_girls <- dim(birth_df_g1)[1]
+boy_follows_girl <- ifelse(birth1 == 0 & birth2 == 1, 1, 0)
+n_bfg <- sum(boy_follows_girl)
+## Compare 1e4 simulated counts of boys to only those second births that followed girls
+## Count the number of first borns who were girls and simulate that many births
+simdat <- rbinom(1e4, size = 49, prob = samples)
+plot(simdat)
+dens(simdat)
+abline(v = n_bfg, col = "red")
+
+## https://github.com/cavaunpeu/statistical-rethinking/blob/master/chapter-3/homework.R
+trials <- 1e4
+boys.born.after.girls <- birth2[birth1 == 0]
+posterior.predictive.distribution <- rbinom(n = trials, size = length(boys.born.after.girls), prob = samples)
+dens(posterior.predictive.distribution, adj = .1)
+abline(v = sum(boys.born.after.girls), col = "red")
+
+
