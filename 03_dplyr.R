@@ -50,11 +50,6 @@ surveys_complete <- surveys_complete %>%
 
 write_csv(surveys_complete, path = "carpentry_training/data_output/surveys_complete.csv")
 
-##### 04-visualization-ggplot2 #####
 
-
-
-
-##### 05-r-and-databases #####
 
 
