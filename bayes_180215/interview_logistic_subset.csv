@@ -1,0 +1,65 @@
+"","closure_effect","closure_effect01","view_of_closure_binary","view_of_closure_binary01","importance_income","income","income01","Nation","Nation01","ves_length","ves_length_z","dist_pomo","dist_pomo_z","Port","group_j"
+"1","yes",1,"favorable",1,"Approx half",3,1,"Italy",1,19.5,-0.0496100615082665,51,-0.186833273242716,"ORTONA",5
+"2","no",0,"favorable",1,"Less than half",2,0,"Italy",1,19,-0.104107294206929,51,-0.186833273242716,"ORTONA",5
+"3","no",0,"favorable",1,"Approx half",3,1,"Italy",1,19.5,-0.0496100615082665,51,-0.186833273242716,"ORTONA",5
+"4","no",0,"unfavorable",0,"Null",0,0,"Italy",1,25,0.549859498177021,51,-0.186833273242716,"ORTONA",5
+"5","no",0,"favorable",1,"A small proportion",1,0,"Italy",1,18,-0.213101759604254,51,-0.186833273242716,"ORTONA",5
+"6","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,25,0.549859498177021,49,-0.229310465027916,"PESCARA",6
+"7","yes",1,"favorable",1,"A majority",4,1,"Italy",1,28,0.876842894368996,49,-0.229310465027916,"PESCARA",6
+"8","yes",1,"favorable",1,"A majority",4,1,"Italy",1,18,-0.213101759604254,49,-0.229310465027916,"PESCARA",6
+"9","yes",1,"favorable",1,"A majority",4,1,"Italy",1,18,-0.213101759604254,49,-0.229310465027916,"PESCARA",6
+"10","yes",1,"unfavorable",0,"Null",0,0,"Italy",1,15,-0.540085155796229,49,-0.229310465027916,"PESCARA",6
+"11","yes",1,"favorable",1,"A majority",4,1,"Italy",1,27,0.767848428971671,49,-0.229310465027916,"PESCARA",6
+"12","yes",1,"favorable",1,"Approx half",3,1,"Italy",1,21,0.113881636587721,49,-0.229310465027916,"PESCARA",6
+"13","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,28,0.876842894368996,49,-0.229310465027916,"PESCARA",6
+"14","no",0,"favorable",1,"Approx half",3,1,"Italy",1,21,0.113881636587721,49,-0.229310465027916,"PESCARA",6
+"15","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,20,0.004887171190396,49,-0.229310465027916,"PESCARA",6
+"16","yes",1,"favorable",1,"A majority",4,1,"Italy",1,20,0.004887171190396,49,-0.229310465027916,"PESCARA",6
+"17","yes",1,"favorable",1,"Approx half",3,1,"Italy",1,20,0.004887171190396,49,-0.229310465027916,"PESCARA",6
+"18","no",0,"favorable",1,"A small proportion",1,0,"Italy",1,23,0.331870567382371,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"19","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,27,0.767848428971671,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"20","yes",1,"favorable",1,"Approx half",3,1,"Italy",1,19,-0.104107294206929,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"21","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,19.5,-0.0496100615082665,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"22","yes",1,"favorable",1,"Approx half",3,1,"Italy",1,23,0.331870567382371,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"23","no",0,"unfavorable",0,"Less than half",2,0,"Italy",1,26,0.658853963574346,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"24","yes",1,"favorable",1,"Less than half",2,0,"Italy",1,23,0.331870567382371,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"25","yes",1,"favorable",1,"A majority",4,1,"Italy",1,25,0.549859498177021,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"26","yes",1,"favorable",1,"A majority",4,1,"Italy",1,24,0.440865032779696,56,-0.0806402937797157,"SAN BENEDETTO DEL TRONTO",8
+"27","yes",1,"favorable",1,"A majority",4,1,"Italy",1,14,-0.649079621193554,44,-0.335503444490916,"GIULIANOVA",2
+"28","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,24,0.440865032779696,44,-0.335503444490916,"GIULIANOVA",2
+"29","yes",1,"favorable",1,"A small proportion",1,0,"Italy",1,8.7,-1.22675028779938,44,-0.335503444490916,"GIULIANOVA",2
+"30","yes",1,"unfavorable",0,"A majority",4,1,"Italy",1,20,0.004887171190396,44,-0.335503444490916,"GIULIANOVA",2
+"31","yes",1,"favorable",1,"A small proportion",1,0,"Italy",1,15,-0.540085155796229,44,-0.335503444490916,"GIULIANOVA",2
+"32","yes",1,"favorable",1,"A majority",4,1,"Italy",1,24,0.440865032779696,54,-0.123117485564916,"VASTO",14
+"33","yes",1,"favorable",1,"A majority",4,1,"Italy",1,NA,NA,54,-0.123117485564916,"VASTO",14
+"34","no",0,"favorable",1,"Approx half",3,1,"Italy",1,NA,NA,54,-0.123117485564916,"VASTO",14
+"35","yes",1,"favorable",1,"A small proportion",1,0,"Italy",1,17,-0.322096225001579,54,-0.123117485564916,"VASTO",14
+"36","yes",1,"favorable",1,"Null",0,0,"Italy",1,20,0.004887171190396,54,-0.123117485564916,"VASTO",14
+"37","yes",1,"favorable",1,"Null",0,0,"Italy",1,20,0.004887171190396,54,-0.123117485564916,"VASTO",14
+"38","yes",1,"unfavorable",0,"A small proportion",1,0,"Italy",1,26.2,0.680652856653811,125,1.38482282280969,"ANCONA",1
+"39","yes",1,"unfavorable",0,"Null",0,0,"Italy",1,22,0.222876101985046,125,1.38482282280969,"ANCONA",1
+"40","no",0,"favorable",1,"Null",0,0,"Italy",1,16.9,-0.332995671541312,125,1.38482282280969,"ANCONA",1
+"41","no",0,"favorable",1,"A small proportion",1,0,"Italy",1,21.5,0.168378869286384,125,1.38482282280969,"ANCONA",1
+"42","no",0,"favorable",1,"Less than half",2,0,"Italy",1,25.5,0.604356730875684,125,1.38482282280969,"ANCONA",1
+"43","yes",1,"favorable",1,"A majority",4,1,"Croatia",0,17.4,-0.278498438842649,50,-0.208071869135316,"SIBENIK",9
+"44","no",0,"favorable",1,"Less than half",2,0,"Croatia",0,17.95,-0.21855148287412,50,-0.208071869135316,"SIBENIK",9
+"45","no",0,"favorable",1,"Less than half",2,0,"Croatia",0,11.3,-0.943364677766332,42,-0.377980636276116,"MURTER",4
+"46","no",0,"favorable",1,"Less than half",2,0,"Croatia",0,16,-0.431090690398904,42,-0.377980636276116,"MURTER",4
+"47","no",0,"favorable",1,"A majority",4,1,"Croatia",0,22.1,0.233775548524779,70,0.216700048716685,"ZADAR",16
+"48","no",0,"favorable",1,"A majority",4,1,"Croatia",0,19,-0.104107294206929,70,0.216700048716685,"ZADAR",16
+"49","no",0,"favorable",1,"A majority",4,1,"Croatia",0,26,0.658853963574346,76,0.344131624072285,"SPLIT",10
+"50","no",0,"favorable",1,"Approx half",3,1,"Croatia",0,11.9,-0.877967998527937,70,0.216700048716685,"ZADAR",16
+"51","yes",1,"favorable",1,"Less than half",2,0,"Croatia",0,14.58,-0.585862831263106,50,-0.208071869135316,"SIBENIK",9
+"52","no",0,"favorable",1,"A small proportion",1,0,"Croatia",0,21.3,0.146579976206919,41,-0.399219232168716,"TRIBUNJ",12
+"53","no",0,"favorable",1,"Null",0,0,"Croatia",0,19,-0.104107294206929,91,0.662710562461285,"STARIGRAD",11
+"54","no",0,"favorable",1,"A majority",4,1,"Croatia",0,29.8,1.07303293208418,76,0.344131624072285,"SPLIT",10
+"55","no",0,"favorable",1,"Null",0,0,"Croatia",0,17.55,-0.26214926903305,130,1.49101580227269,"PODGORA",7
+"56","no",0,"favorable",1,"Null",0,0,"Croatia",0,20,0.004887171190396,78,0.386608815857485,"UGLJAN",13
+"57","no",0,"favorable",1,"Null",0,0,"Croatia",0,22,0.222876101985046,62,0.0467912815758844,"KUKLJICA",3
+"58","yes",1,"favorable",1,"Less than half",2,0,"Croatia",0,17,-0.322096225001579,62,0.0467912815758844,"KUKLJICA",3
+"59","no",0,"favorable",1,"A majority",4,1,"Croatia",0,15,-0.540085155796229,42,-0.377980636276116,"MURTER",4
+"60","no",0,"favorable",1,"A small proportion",1,0,"Croatia",0,12.7,-0.790772426210077,43,-0.356742040383516,"VODICE",15
+"61","no",0,"favorable",1,"A majority",4,1,"Croatia",0,14,-0.649079621193554,42,-0.377980636276116,"MURTER",4
+"62","no",0,"favorable",1,"A small proportion",1,0,"Croatia",0,18.34,-0.176043641369164,41,-0.399219232168716,"TRIBUNJ",12
+"63","no",0,"favorable",1,"A majority",4,1,"Croatia",0,13,-0.758074086590879,42,-0.377980636276116,"MURTER",4
+"64","no",0,"favorable",1,"Less than half",2,0,"Croatia",0,15,-0.540085155796229,41,-0.399219232168716,"TRIBUNJ",12

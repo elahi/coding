@@ -1,0 +1,16 @@
+---
+title: "stancon"
+author: "Robin Elahi"
+date: "January 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Day 1
+
+### Bayesian workflow
+
+
