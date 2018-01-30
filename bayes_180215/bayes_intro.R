@@ -23,7 +23,6 @@ rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 # These options respectively allow you to automatically save a bare version of a compiled Stan program to the hard disk so that it does not need to be recompiled and to execute multiple Markov chains in parallel.
 
-
 dat <- read.csv("interview_logistic_subset.csv")
 names(dat)
 
@@ -65,6 +64,8 @@ dat %>%
 
 ## I need to remove rows with NAs
 stat_dat <- dat[complete.cases(dat), ]
+## Create observation id
+stat_dat <- stat_dat %>% mutate(obs_id = seq(1:n()))
 
 #' I want to estimate the following model:
 #' Pr(affected = 1) = intercept + nation + distance_to_closure + vessel_size
@@ -126,14 +127,14 @@ parameters {
   real b3;
 }
 model {
-  alpha ~ normal(0,10);
-  b1 ~ normal(0,10);
+  alpha ~ normal(0,10);       // prior on intercept
+  b1 ~ normal(0,10);          // prior on coefficient
   b2 ~ normal(0,10);
   b3 ~ normal(0,10);
   y ~ bernoulli_logit(alpha + b1*x1 + b2*x2 + b3*x3);
 }
 generated quantities {
-  vector[N] y_new; // Draws from posterior predictive distribution
+  vector[N] y_new;            // Draws from posterior predictive distribution
 
   for(n in 1:N) {
     // Draw from ppd
@@ -216,6 +217,15 @@ posterior <- as.array(stan1)
 dim(posterior)
 dimnames(posterior)
 
+## posterior is an array extracted from the stan object
+dim(posterior)
+posterior[1,1,] # one iteration
+y_new_vector <- posterior[1,1,5:66] # one iteration
+length(y_new_vector)
+length(stat_dat$closure_effect01)
+sampled_iterations <- sample(seq(1:1000), 9, replace = FALSE)
+y_new_matrix <- posterior[sampled_iterations, 1, 5:66] 
+
 ## http://mc-stan.org/bayesplot/articles/plotting-mcmc-draws.html
 color_scheme_set("red")
 
@@ -246,28 +256,29 @@ mcmc_trace(posterior, pars = c("alpha","b1", "b2", "b3"))
 ## Rhats
 ## One way to monitor whether a chain has converged to the equilibrium distribution is to compare its behavior to other randomly initialized chains. This is the motivation for the Gelman and Rubin (1992) potential scale reduction statistic, R̂ . The R̂  statistic measures the ratio of the average variance of samples within each chain to the variance of the pooled samples across chains; if all chains are at equilibrium, these will be the same and R̂  will be one. If the chains have not converged to a common distribution, the R̂  statistic will be greater than one. (Stan Development Team, 2016).
 
-rhats <- rhat(stan1)
+rhats <- rhat(stan1, pars = c("alpha","b1", "b2", "b3"))
 print(rhats)
 
 ## Effective sample size
 ## The effective sample size is an estimate of the number of independent draws from the posterior distribution of the estimand of interest. Because the draws within a Markov chain are not independent if there is autocorrelation, the effective sample size, neff, will be smaller than the total sample size, N. The larger the ratio of neff to N the better.
 
-ratios_cp <- neff_ratio(stan1)
+ratios_cp <- neff_ratio(stan1, pars = c("alpha","b1", "b2", "b3"))
 print(ratios_cp)
-
 
 ##### POSTERIOR PREDICTIVE CHECKS #####
 
+stat_dat %>% count(Nation, closure_effect01)
+nation_y <- stat_dat %>% count(Nation, closure_effect01)
+
 # Get vector of y outcome values
-y <- stat_dat$Nation01
-
-# And a matrix of draws from the posterior predictive distribution
-yrep <- posterior_predict(stan1, draws = 500)
-
-
+y <- stat_dat$closure_effect01
+nation <- stat_dat$Nation01
 
 ## Extract mcmc iterations in long format
 stan1_mcmc <- stan1 %>% rstan::extract()
+summary(stan1_mcmc)
+head(stan1_mcmc$alpha)
+str(stan1_mcmc$b1)
 head(stan1_mcmc$y_new)
 
 stan1_pars <- stan1_mcmc[ c("alpha", "b1", "b2", "b3")] %>% 
@@ -280,55 +291,64 @@ stan1_pars %>%
   facet_wrap(~variable, scales = 'free') + 
   coord_flip()
 
+pp_ynew_matrix <- stan1_mcmc$y_new
+
+## Create a dataframe
 pp_ynew <- stan1_mcmc['y_new'] %>% 
   map_df(as_data_frame, .id = 'variable') %>% 
   gather(observation, value, -variable) %>% 
   mutate(iteration = rep(1:4000, 62))
 
-pp_ynew %>% count(observation)
+## Get observation ID to match with empirical data
+pp_ynew <- pp_ynew %>%
+  mutate(obs_id = as.numeric(substring(observation, 2)))
+       
+## Join with empirical data on Nations
+pp_ynew <- stat_dat %>% select(obs_id, closure_effect01, Nation) %>% 
+  left_join(pp_ynew, ., by = "obs_id")
 
-pp_ynew_counts <- pp_ynew %>% count(value, iteration)
+##### PLOT BY OBS ID
 
-nation_y <- stat_dat %>% count(Nation, closure_effect01)
-stat_dat %>% count(closure_effect01)
+stat_dat %>% 
+  ggplot(aes(obs_id, closure_effect01, color = Nation)) + 
+  geom_point()
 
-pp_observed <- data.frame(value = c(0, 1), 
-                          n = c(29, 33))
+pp_ynew_obsid_counts <- pp_ynew %>% 
+  count(obs_id, value) 
 
-pp_ynew_counts %>% 
-  #filter(value == 0) %>% 
-  ggplot(aes(n, fill = as.character(value))) + 
-  geom_density(alpha = 0.5) + 
-  geom_vline(data = pp_observed, aes(xintercept = n, color = as.character(value)))
+pp_ynew_obsid_counts_wide <- pp_ynew_obsid_counts %>% 
+  spread(key = value, value = n) %>% 
+  mutate(prop_affected = `1` / (`0` + `1`))
 
+pp_ynew_obsid_counts
 
+pp_ynew_obsid_counts %>% 
+  ggplot(aes(obs_id, value, size = n)) + 
+  geom_point(alpha = 0.2) + 
+  geom_point(data = stat_dat, aes(obs_id, closure_effect01, color = Nation, size = NULL)) + 
+  geom_point(data = pp_ynew_obsid_counts_wide, 
+             aes(obs_id, prop_affected, color = NULL, size = NULL))
 
-## Get the median value for each observation
-## And the original observations
-pp_ynew_mean <- pp_ynew %>% 
-  group_by(observation) %>% 
-  summarise(y_new = mean(value)) %>% 
-  mutate(obs_id = as.numeric(substring(observation, 2)), 
-         y = stat_dat$closure_effect01) %>% 
-  arrange(obs_id)
+pp_ynew %>% 
+  ggplot(aes(obs_id, value, color = Nation)) + 
+  geom_point(alpha = 0.01)
 
-pp_ynew_mean %>% 
-  ggplot(aes(y, y_new)) + 
-  geom_jitter(alpha = 0.5, width = 0.05, height = 0.05)
+##### PLOT BY NATION
 
-## Get the original o
-my_predictions <- unique(pp_ynew$observation)[1:9]
-pp_ynew_sub <- pp_ynew
+## Get those affected by nation and iteration
+pp_ynew_nation_counts <- pp_ynew %>% 
+  count(iteration, Nation, value) 
 
+## Complete the dataset and select affected (value = 1)
+pp_ynew_nation_counts2 <- pp_ynew_nation_counts %>% 
+  complete(iteration, Nation, value, fill = list(n = 0)) %>% 
+  filter(value == 1)
 
-ggplot() + 
-  geom_bar(data = stat_dat, aes(closure_effect01)) +
-  geom_bar(data = pp_ynew, aes(value)) +
-  facet_wrap(~ obser)
-geom_density(data = pp_ynew, aes(value,fill = 'Posterior Predictive'), alpha = 0.5) + 
-  geom_density(data = sal_data, aes(r, fill = 'Observed'), alpha = 0.5)
+nation_y_affected <- nation_y %>% filter(closure_effect01 == 1)
 
-
-
-
+pp_ynew_nation_counts2 %>% 
+  ggplot(aes(n, fill = Nation)) + 
+  geom_histogram(binwidth = 1, color = "black", alpha = 0.5) + 
+  geom_vline(data = nation_y_affected, aes(xintercept = n, color = Nation), size = 2) + 
+  labs(title = "Were you affected by the closure?")
 

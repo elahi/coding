@@ -77,7 +77,7 @@ https://raw.githubusercontent.com/elahi/coding/master/bayes_180215/interview_log
 
 Create a new folder called ``bayes_180215``, drop this data file in it, and set your [working directory](http://rfunction.com/archives/1001) to this folder. 
 
-You should have the following R packages installed: ``rstan, bayesplot, lme4, ggplot2, broom``. 
+You should also have the following R packages installed: ``lme4, ggplot2, dplyr, purrr, tidyr, broom, bayesplot``. 
 
 I recommend RStudio - see [here](https://www.rstudio.com/products/rstudio/download/) for installation. 
 
