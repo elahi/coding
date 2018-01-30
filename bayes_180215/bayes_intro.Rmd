@@ -1,0 +1,86 @@
+---
+title: "Intro to Bayes"
+author: "Robin Elahi"
+date: "January 29, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Acknowledgements and sources
+
+This tutorial is based on other tutorials that I found on the web. I pirated shamelessly from these awesome sources:
+
+  - https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started
+  - http://mc-stan.org/bayesplot/articles/index.html
+  - https://github.com/rmcelreath/rethinking
+  - https://github.com/DanOvando/learn-stan
+  - https://github.com/danilofreire/r-scripts/blob/master/stan-logistic-regression.R
+
+There are many texts on Bayesian data analysis. Here are two that I found quite helpful in getting started:
+
+  - ["Bayesian Models: A Statistical Primer for Ecologists"](https://press.princeton.edu/titles/10523.html)
+  - ["Statistical Rethinking"](http://xcelab.net/rm/statistical-rethinking/)
+
+## Installing stan and rstan
+
+We are going to use ``rstan`` to fit our Bayesian models. So, you'll need to install ``rstan`` before class. Go to ``http://mc-stan.org`` and follow the instructions for your platform. The biggest challenge is getting a C++ compiler configured to work with your installation of R. The instructions at the [rstan getting started website](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) are quite thorough. 
+
+Installing Stan can be a bit complicated on some machines, especially if you haven't run programs that require a C++ compiler before (if that sentance doesn't make sense to you, this means you), so **PLEASE DON'T WAIT UNTIL THE MORNING OF THE WORKSHOP TO TRY AND INSTALL STAN**. Try to install it a few days beforehand, and if you can't get it to work let me know and I'll try to help. 
+
+To check that it works, once you've succesfully done all the other steps please open R and run the code below. If it works, you're good to go!
+
+```{r, echo = TRUE, eval = FALSE}
+library(rstan)
+stanmodelcode <- "
+data {
+  int<lower=0> N;
+  real y[N];
+} 
+
+parameters {
+  real mu;
+} 
+
+model {
+  target += normal_lpdf(mu | 0, 10);
+  target += normal_lpdf(y  | mu, 1);
+} 
+"
+
+y <- rnorm(20) 
+dat <- list(N = 20, y = y); 
+fit <- stan(model_code = stanmodelcode, model_name = "example", 
+            data = dat, iter = 2012, chains = 3, sample_file = 'norm.csv',
+            verbose = TRUE) 
+print(fit)
+traceplot(fit)
+
+# extract samples 
+e <- extract(fit, permuted = TRUE) # return a list of arrays 
+mu <- e$mu 
+
+m <- extract(fit, permuted = FALSE, inc_warmup = FALSE) # return an array 
+print(dimnames(m))
+
+# using as.array directly on stanfit objects 
+m2 <- as.array(fit)
+```
+
+### Other prep
+
+You can access the data we use in this tutorial here:
+
+https://raw.githubusercontent.com/elahi/coding/master/bayes_180215/interview_logistic_subset.csv
+
+Create a new folder called ``bayes_180215``, drop this data file in it, and set your [working directory](http://rfunction.com/archives/1001) to this folder. 
+
+You should have the following R packages installed: ``rstan, bayesplot, lme4, ggplot2, broom``. 
+
+I recommend RStudio - see [here](https://www.rstudio.com/products/rstudio/download/) for installation. 
+
+Make sure that your version of R is up to date, and all your packages are up to date. 
+
+Ready to roll. 
