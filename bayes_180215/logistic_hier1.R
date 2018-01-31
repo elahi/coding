@@ -111,8 +111,8 @@ init_list <- list(
 )
 
 ## Stan model
-sink("stan/logistic-pooled.stan")
-cat("// logistic-pooled.stan
+sink("stan/logistic-hier1.stan")
+cat("// logistic-hier1.stan
 data {
   int<lower=0> N;             // number of observations
   int<lower=0,upper=1> y[N];  // set the (binary) dependent variable as bounded between 0 and 1
@@ -125,28 +125,27 @@ parameters {
   real b1;
   real b2;
   real b3;
+  real<lower=0> sigmap;       // to allow for sampling variance
+  real logodds[N]; 
 }
 model {
   alpha ~ normal(0,10);       // prior on intercept
   b1 ~ normal(0,10);          // prior on coefficient
   b2 ~ normal(0,10);
   b3 ~ normal(0,10);
-  y ~ bernoulli_logit(alpha + b1*x1 + b2*x2 + b3*x3);
-}
-generated quantities {
-  vector[N] y_new;            // Draws from posterior predictive distribution
+  sigmap ~ chi_square(2);
 
-  for(n in 1:N) {
-    // Draw from ppd
-    //y_new[n] = inv_logit(alpha + b1*x1[n] + b2*x2[n] + b3*x3[n]); // returns probability
-    y_new[n] = bernoulli_rng(inv_logit(alpha + b1*x1[n] + b2*x2[n] + b3*x3[n])); // returns 0 or 1
-  }
-}", fill = TRUE)
+  for(i in 1:N)
+    logodds[i] = inv_logit(alpha + b1*x1[i] + b2*x2[i] + b3*x3[i]);  // get predicted log odds
+    p[i] ~ normal(logodds[i], sigmap);                                // sample from predicted log odds
+    y[i] ~ bernoulli(p[i]);                                           // sample bernoulli
+}
+", fill = TRUE)
 sink()
 
 ## Estimate the model
-stan1 <- stan(file = "stan/logistic-pooled.stan", data = data_list, init = init_list, 
-              iter = n_iter, warmup = n_warmup, thin = n_thin, chains = n_chains, cores = n_cores)
+stan1 <- stan(file = "stan/logistic-hier1.stan", data = data_list, init = init_list, 
+              iter = 1000, warmup = 500, thin = n_thin, chains = n_chains, cores = n_cores)
 
 class(stan1)
 summary(stan1)
