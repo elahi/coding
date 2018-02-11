@@ -58,15 +58,6 @@ fit <- stan(model_code = stanmodelcode, model_name = "example",
 print(fit)
 traceplot(fit)
 
-# extract samples 
-e <- extract(fit, permuted = TRUE) # return a list of arrays 
-mu <- e$mu 
-
-m <- extract(fit, permuted = FALSE, inc_warmup = FALSE) # return an array 
-print(dimnames(m))
-
-# using as.array directly on stanfit objects 
-m2 <- as.array(fit)
 ```
 
 ### Other prep
@@ -77,10 +68,9 @@ https://raw.githubusercontent.com/elahi/coding/master/bayes_180215/interview_log
 
 Create a new folder called ``bayes_180215``, drop this data file in it, and set your [working directory](http://rfunction.com/archives/1001) to this folder. 
 
-You should also have the following R packages installed: ``lme4, ggplot2, dplyr, purrr, tidyr, broom, bayesplot``. 
+You should also have the following R packages installed: ``ggplot2, dplyr, tidyr, broom, bayesplot``. 
 
 I recommend RStudio - see [here](https://www.rstudio.com/products/rstudio/download/) for installation. 
 
 Make sure that your version of R is up to date, and all your packages are up to date. 
 
-Ready to roll. 

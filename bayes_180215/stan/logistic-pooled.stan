@@ -19,12 +19,4 @@ model {
   b3 ~ normal(0,10);
   y ~ bernoulli_logit(alpha + b1*x1 + b2*x2 + b3*x3);
 }
-generated quantities {
-  vector[N] y_new;            // Draws from posterior predictive distribution
 
-  for(n in 1:N) {
-    // Draw from ppd
-    //y_new[n] = inv_logit(alpha + b1*x1[n] + b2*x2[n] + b3*x3[n]); // returns probability
-    y_new[n] = bernoulli_rng(inv_logit(alpha + b1*x1[n] + b2*x2[n] + b3*x3[n])); // returns 0 or 1
-  }
-}
