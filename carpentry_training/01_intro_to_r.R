@@ -6,15 +6,15 @@
 
 ##### OBJECTIVES #####
 
-# • Define the following terms as they relate to R: object, assign, call, function, arguments, options.
-# • Assign values to variables in R.
-# • Learn how to name objects
-# • Use comments to inform script.
-# • Solve simple arithmetic operations in R.
-# • Call functions and use arguments to change their default options.
-# • Inspect the content of vectors and manipulate their content.
-# • Subset and extract values from vectors.
-# • Analyze vectors with missing data.
+# Define the following terms as they relate to R: object, assign, call, function, arguments, options.
+# Assign values to variables in R.
+# Learn how to name objects
+# Use comments to inform script.
+# Solve simple arithmetic operations in R.
+# Call functions and use arguments to change their default options.
+# Inspect the content of vectors and manipulate their content.
+# Subset and extract values from vectors.
+# Analyze vectors with missing data.
 
 ##### Creating objects #####
 
@@ -59,7 +59,8 @@ weight_kg <- 100
 #' comment shortcut
 #' Ctrl + Shift + C
 
-### Challenge
+### Challenge 1
+## What are the values after each statement in the following?
 mass <- 45            # mass?
 age <- 120            # age?
 mass <- mass * 2.0    # mass?
@@ -114,7 +115,7 @@ typeof(weight_g)
 ## Other data structures, besides vectors
 # lists, matrices, data frames, factors, arrays
 
-### Challenge
+### Challenge 2 
 
 ## We’ve seen that atomic vectors can be of type character, numeric (or double), integer, and logical. But what happens if we try to mix these types in a single vector?
 # R implicitly converts them all to be the same type
@@ -133,7 +134,7 @@ class(char_logical)
 ## Why do you think it happens?
 # Vectors can only be of one type. R converts (coerces) the content to find a 'common denominator'
 
-## How many values in comibined_logical are "TRUE" as a character in the following example?
+## How many values in combined_logical are "TRUE" as a character in the following example?
 num_logical <- c(1, 2, 3, TRUE)
 char_logical <- c("a", "b", "c", TRUE)
 combined_logical <- c(num_logical, char_logical)
@@ -168,7 +169,7 @@ animals <- c("mouse", "rat", "dog", "cat")
 animals[animals == "cat" | animals == "rat"]
 animals %in% c("rat", "cat", "dog", "duck", "goat")
 
-### Challenge
+### Challenge 3 
 ## Can you figure out why:
 "four" >  "five" 
 # alphabetical
@@ -197,7 +198,7 @@ na.omit(heights)
 ## Extract those elements which are complete cases. The returned object is an atomic vector of type `"numeric"` (or `"double"`).
 heights[complete.cases(heights)]
 
-### Challenge
+### Challenge 4
 
 ## Using this vector of length measurements, create a new vector with the NAs removed.
 lengths <- c(10, 24, NA, 18, NA, 20)
@@ -206,7 +207,7 @@ lengths <- c(10, 24, NA, 18, NA, 20)
 lengths[!is.na(lengths)]
 na.omit(lengths)
 
-## Use the function median()  to calculate the median of the lengths vector
+## Use the function median() to calculate the median of the lengths vector
 median(lengths, na.rm = T)
 
 

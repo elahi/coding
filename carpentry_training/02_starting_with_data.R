@@ -1,10 +1,18 @@
 ##' Robin Elahi
 ##' 9 Nov 2017
-##' http://www.datacarpentry.org/R-ecology-lesson/02-starting-with-data.html
+##' 23 April 2018
+##' R-Ecology-Lesson
+##' 02-starting-with-data
 
-
-##### 02-starting-with-data #####
-
+##### OBJECTIVES #####
+# Describe what a data frame is.
+# Load external data from a .csv file into a data frame.
+# Summarize the contents of a data frame.
+# Describe what a factor is.
+# Convert between strings and factors.
+# Reorder and rename factors.
+# Change how character strings are handled in a data frame.
+# Format dates.
 
 ##### PRESENTATION OF THE SURVEY DATA #####
 
@@ -13,8 +21,24 @@
 #               
 surveys <- read.csv("data/portal_data_joined.csv")
 
+# Check output
+surveys
+head(surveys)
+View(surveys)
+
+# read.csv
+# read.csv2 (uses ; instead of ,)
+# read.table (for tab delimited)
+
 ##### WHAT ARE DATAFRAMES? #####
 
+# So what are dataframes?
+# defacto structure for most tabular data
+# can make by hand
+# but usually read in a file
+# columns are vectors that all have the same length
+
+## Inspecting dataframes
 head(surveys)
 str(surveys)
 dim(surveys)
@@ -25,11 +49,17 @@ rownames(surveys)
 
 str(surveys)
 
-## Challenge
-#' What is the class - data.frame
-#' Rows = 34786
-#' Columns = 13
-#' Species = 40
+### Challenge 1
+
+## Based on the output of str(surveys), can you answer the following questions?
+# What is the class of the object surveys?
+# How many rows and how many columns are in this object?
+# How many species have been recorded during these surveys?
+
+str(surveys)
+## * class: data frame
+## * how many rows: 34786,  how many columns: 13
+## * how many species: 48
 
 ##### INDEXING AND SUBSETTING #####
 
@@ -49,15 +79,21 @@ surveys[, "species_id"]     # Result is a vector
 surveys[["species_id"]]     # Result is a vector
 surveys$species_id          # Result is a vector
 
-##' Challenge
+### Challenge 2
 
-# # Making it easier
-# # 0. Can you extract the first item from the dataframe?
-# surveys[1, 1]
-# # 1. 
-# surveys_200 <- surveys[___, ]
+## Create a data.frame (surveys_200) containing only the observations from row 200 of the surveys dataset.
 
+## Notice how nrow() gave you the number of rows in a data.frame?
+# Use that number to pull out just that last row in the data frame.
+# Compare that with what you see as the last row using tail() to make sure it's meeting expectations.
+# Pull out that last row using nrow() instead of the row number.
+# Create a new data frame (surveys_last) from that last row.
 
+## Use nrow() to extract the row that is in the middle of the data frame. Store the content of this row in an object named surveys_middle.
+
+## Combine nrow() with the - notation above to reproduce the behavior of head(surveys), keeping just the first through 6th rows of the surveys dataset.
+
+### Answers
 # 1. 
 surveys_200 <- surveys[200, ]
 # 2. 
@@ -70,10 +106,8 @@ surveys_last <- surveys[nrow(surveys), ]
 surveys_middle <- surveys[nrow(surveys)/2, ]
 # 4. 
 surveys[-c(7:nrow(surveys)), ]
-
 # 5. Use dim() and index operation to get the last row
 surveys[dim(surveys)[1],]
-
 
 ##### FACTORS #####
 sex <- factor(c("male", "female", "female", "male"))
