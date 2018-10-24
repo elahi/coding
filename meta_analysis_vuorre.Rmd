@@ -286,6 +286,10 @@ bayes_forest <- function(data, model, title, xlimits, level, rma) {
 }
 ```
 
+```{r}
+
+```
+
 ```{r draw-forest-plot, fig.height = 10}
 fit_forest <- bayes_forest(data = dat, 
                            model = brm_out, 
@@ -296,6 +300,8 @@ fit_forest <- bayes_forest(data = dat,
 fit_forest
 
 ```
+
+
 
 This forest plot displays, as violin plots, the entire posterior distribution of each $\theta_i$. The meta-analytic effect size $\mu$ is also displayed amidst the varying $\theta_i$s. The mean and 95% CI limits of the posteriors are also displayed on the right in text form for all you precision fans.
 
@@ -330,4 +336,15 @@ Stan Development Team. (2016). Stan: A C++ Library for Probability and Sampling,
 Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. Journal of Statistical Software, 36(3), 1–48.
 
 Wickham, H. (2009). ggplot2: Elegant Graphics for Data Analysis. Springer Science & Business Media.
+
+
+# Better forest plots from meta-analytic models estimated with brms
+
+```{r}
+data("dat.bangertdrowns2004", package = "metafor")
+head(dat.bangertdrowns2004)
+```
+
+
+
 
