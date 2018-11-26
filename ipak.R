@@ -36,3 +36,11 @@ packages <- c("reshape2", "RColorBrewer", "scales", "grid",
               "AICcmodavg")
 
 ipak(packages)
+
+## rethinking
+packages <- (c("mvtnorm", "loo", "coda"))
+ipak(packages)
+
+options(repos=c(getOption('repos'), rethinking='http://xcelab.net/R'))
+install.packages('rethinking',type='source')
+
