@@ -5,6 +5,10 @@
 ##' @date 2020-07-08
 ################################################################################
 
+library(tidyverse)
+
+##### LOGISTIC MAP, DISCRETIZATION OF THE LOGISTIC MODEL #####
+
 ## This script adapted from:
 ## http://biom300.weebly.com/logistic-model.html
 
@@ -63,10 +67,62 @@ plot(x=0:10, y=n, type='l', xlab='Time', ylab='Population size', main='Discrete 
 
 ## Experimenting with parameters
 n0 <- 1
-p <- c(r = 0.5, K = 100) 
-n_years <- 100
+p <- c(r = 0.5, K = 50) 
+n_years <- 50
 n <- disc.logistic.2(n = n0, p = p, T = n_years)
 plot(x = 0:n_years, y = n, type = 'l', 
      xlab = 'Time', ylab = 'Population size', 
      main = 'Discrete time logistic model')
 
+## Plot population growth rate against population size
+df <- tibble(t = 1:length(n), 
+             n = n, 
+             n_lead = lead(n), 
+             n_change = n_lead - n, 
+             per_capita_change = n_change / n, 
+             pop_growth_rate = per_capita_change * n)
+
+df %>% 
+  ggplot(aes(t, n)) + 
+  geom_point()
+
+df %>% 
+  ggplot(aes(n, per_capita_change)) + 
+  geom_line()
+
+df %>% 
+  ggplot(aes(n, pop_growth_rate)) + 
+  geom_point() + 
+  geom_line()
+
+
+##### CORRECTIONS FROM GIULIO #####
+
+bh_logistic <- function(n, p) { ## here are just saying that 'disc.logistic' is a function that takes two arguments
+  r <- unname(p['r']) ## set the growth rate (dropping the parameter name with 'unname')
+  K <-  unname(p['K']) ## set the carrying capacity
+  n1 <- (exp(r) * n) / ((1 + ((exp(r) - 1) / K)) * n)  ## calculate the new population size
+  return(n1) ## and return it 
+}
+
+bh_logistic2 <- function(n, p, T) { ## T is the total number of time steps
+  N <- vector(length = T + 1)
+  N[1] <- n ## set the initial value
+  for (t in 1:T) { 
+    N[t + 1] <- bh_logistic(n = N[t], p = p)
+  }
+  return(N) ## return the vector of population sizes
+}
+
+## Experimenting with parameters
+n0 <- 1
+p <- c(r = 0.25, K = 20) 
+n_years <- 50
+
+bh_logistic(n = n0, p = p)
+
+n <- bh_logistic2(n = n0, p = p, T = n_years)
+
+plot(x = 0:n_years, y = n, type = 'l', 
+     xlab = 'Time', ylab = 'Population size', 
+     main = 'Discrete time logistic model')
