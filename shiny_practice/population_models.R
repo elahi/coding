@@ -81,6 +81,7 @@ df <- tibble(t = 1:length(n),
              n_change = n_lead - n, 
              per_capita_change = n_change / n, 
              pop_growth_rate = per_capita_change * n)
+write.csv(df, "shiny_practice/pop_models.csv")
 
 df %>% 
   ggplot(aes(t, n)) + 
@@ -95,34 +96,36 @@ df %>%
   geom_point() + 
   geom_line()
 
+plot(df$n, df$pop_growth_rate, type = "b")
 
-##### CORRECTIONS FROM GIULIO #####
-
-bh_logistic <- function(n, p) { ## here are just saying that 'disc.logistic' is a function that takes two arguments
-  r <- unname(p['r']) ## set the growth rate (dropping the parameter name with 'unname')
-  K <-  unname(p['K']) ## set the carrying capacity
-  n1 <- (exp(r) * n) / ((1 + ((exp(r) - 1) / K)) * n)  ## calculate the new population size
-  return(n1) ## and return it 
-}
-
-bh_logistic2 <- function(n, p, T) { ## T is the total number of time steps
-  N <- vector(length = T + 1)
-  N[1] <- n ## set the initial value
-  for (t in 1:T) { 
-    N[t + 1] <- bh_logistic(n = N[t], p = p)
-  }
-  return(N) ## return the vector of population sizes
-}
-
-## Experimenting with parameters
-n0 <- 1
-p <- c(r = 0.25, K = 20) 
-n_years <- 50
-
-bh_logistic(n = n0, p = p)
-
-n <- bh_logistic2(n = n0, p = p, T = n_years)
-
-plot(x = 0:n_years, y = n, type = 'l', 
-     xlab = 'Time', ylab = 'Population size', 
-     main = 'Discrete time logistic model')
+# 
+# ##### CORRECTIONS FROM GIULIO #####
+# 
+# bh_logistic <- function(n, p) { ## here are just saying that 'disc.logistic' is a function that takes two arguments
+#   r <- unname(p['r']) ## set the growth rate (dropping the parameter name with 'unname')
+#   K <-  unname(p['K']) ## set the carrying capacity
+#   n1 <- (exp(r) * n) / ((1 + ((exp(r) - 1) / K)) * n)  ## calculate the new population size
+#   return(n1) ## and return it 
+# }
+# 
+# bh_logistic2 <- function(n, p, T) { ## T is the total number of time steps
+#   N <- vector(length = T + 1)
+#   N[1] <- n ## set the initial value
+#   for (t in 1:T) { 
+#     N[t + 1] <- bh_logistic(n = N[t], p = p)
+#   }
+#   return(N) ## return the vector of population sizes
+# }
+# 
+# ## Experimenting with parameters
+# n0 <- 1
+# p <- c(r = 0.25, K = 20) 
+# n_years <- 50
+# 
+# bh_logistic(n = n0, p = p)
+# 
+# n <- bh_logistic2(n = n0, p = p, T = n_years)
+# 
+# plot(x = 0:n_years, y = n, type = 'l', 
+#      xlab = 'Time', ylab = 'Population size', 
+#      main = 'Discrete time logistic model')

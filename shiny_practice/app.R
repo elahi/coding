@@ -11,7 +11,7 @@ disc.logistic <- function(n, p) {
 }
 
 disc.logistic.2 <- function(n, p, T) { ## T is the total number of time steps
-  N <- vector(length=T+1)
+  N <- vector(length = T + 1)
   N[1] <- n ## set the initial value
   for (t in 1:T) { 
     N[t+1] <- disc.logistic(N[t], p) ## we can call the function we wrote above to calculate the new population size
@@ -25,13 +25,18 @@ ui <- fluidPage(
   sliderInput(inputId = "K", 
               label = "Choose carrying capacity", 
               value = 100, min = 10, max = 500), 
+  
+  sliderInput(inputId = "r", 
+              label = "Choose intrinsic growth rate (r)", 
+              value = 0.1, min = -1.0, max = 1.0, step = 0.1),
+  
   plotOutput("timeseries")
 )
 
 server <- function(input, output) {
   output$timeseries <- renderPlot({
     n0 <- 1
-    p <- c(r = 0.5, K = input$K) 
+    p <- c(r = input$r, K = input$K) 
     n_years <- 50
     n <- disc.logistic.2(n = n0, p = p, T = n_years)
     plot(x = 0:n_years, y = n, type = 'l', 
