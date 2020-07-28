@@ -30,6 +30,13 @@ ui <- fluidPage(
               label = "Choose intrinsic growth rate (r)", 
               value = 0.1, min = -1.0, max = 1.0, step = 0.1),
   
+  sliderInput(inputId = "t", 
+              label = "Choose length of time series (t)", 
+              value = 20, min = 5, max = 100, step = 1),
+  
+  checkboxInput(inputId = "logarithmY", 
+                label = "Log y axis", FALSE), 
+  
   plotOutput("timeseries")
 )
 
@@ -37,11 +44,30 @@ server <- function(input, output) {
   output$timeseries <- renderPlot({
     n0 <- 1
     p <- c(r = input$r, K = input$K) 
-    n_years <- 50
+    n_years <- input$t
     n <- disc.logistic.2(n = n0, p = p, T = n_years)
-    plot(x = 0:n_years, y = n, type = 'l', 
-         xlab = 'Time', ylab = 'Population size', 
-         main = 'Discrete time logistic model')
+    
+    df <- tibble(t = 1:length(n), 
+                 n = n, 
+                 n_lead = lead(n), 
+                 n_change = n_lead - n, 
+                 per_capita_change = n_change / n, 
+                 pop_growth_rate = per_capita_change * n)
+    
+    mygg <- ggplot(df, aes(x = t, y = n)) +
+      geom_line() + 
+      labs(x = "Time", y = "Population size", 
+           title = "Discrete time logistic model")
+    
+    my_gg2 <- df %>% 
+      ggplot(aes(n, pop_growth_rate)) + 
+      geom_point() + 
+      geom_line()
+    
+    if(input$logarithmY)
+      mygg <- mygg + scale_y_log10()
+    
+    return(my_gg2)
     
   })
 }

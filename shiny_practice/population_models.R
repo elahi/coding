@@ -74,6 +74,16 @@ plot(x = 0:n_years, y = n, type = 'l',
      xlab = 'Time', ylab = 'Population size', 
      main = 'Discrete time logistic model')
 
+df <- tibble(x = seq(0, n_years), 
+             n = n)
+
+df %>% 
+  ggplot(aes(x = x, y = n)) + 
+  geom_line() + 
+  labs(x = "Time", y = "Population size", 
+       title = "Discrete time logistic model") +
+  scale_y_log10()
+
 ## Plot population growth rate against population size
 df <- tibble(t = 1:length(n), 
              n = n, 
