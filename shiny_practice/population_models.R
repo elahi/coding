@@ -93,9 +93,19 @@ df <- tibble(t = 1:length(n),
              pop_growth_rate = per_capita_change * n)
 write.csv(df, "shiny_practice/pop_models.csv")
 
+ggplot(data = df, mapping = aes(x = t, y = n)) +
+  geom_point() + 
+  geom_line()
+
+df %>% 
+  ggplot(data = ., mapping = aes(x = t, y = n)) +
+  geom_point() + 
+  geom_line()
+
 df %>% 
   ggplot(aes(t, n)) + 
-  geom_point()
+  geom_point() + 
+  geom_line()
 
 df %>% 
   ggplot(aes(n, per_capita_change)) + 
@@ -105,6 +115,8 @@ df %>%
   ggplot(aes(n, pop_growth_rate)) + 
   geom_point() + 
   geom_line()
+ggsave(filename = "shiny_practice/figs/pgr-n-plot.png", 
+       height = 3.5, width = 3.5)
 
 plot(df$n, df$pop_growth_rate, type = "b")
 
