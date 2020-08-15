@@ -54,7 +54,7 @@ server <- function(input, output) {
                  per_capita_change = n_change / n, 
                  pop_growth_rate = per_capita_change * n)
     
-    mygg <- ggplot(df, aes(x = t, y = n)) +
+    my_gg <- ggplot(df, aes(x = t, y = n)) +
       geom_line() + 
       labs(x = "Time", y = "Population size", 
            title = "Discrete time logistic model")
