@@ -54,3 +54,5 @@ rsconnect/
 .DS_Store
 /.quarto/
 /_site/
+ignore_folder/
+bayes_180215/sandbox
